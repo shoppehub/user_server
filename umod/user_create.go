@@ -54,9 +54,25 @@ func (uc *UserCreate) SetName(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (uc *UserCreate) SetNillableName(s *string) *UserCreate {
+	if s != nil {
+		uc.SetName(*s)
+	}
+	return uc
+}
+
 // SetNickName sets the "nickName" field.
 func (uc *UserCreate) SetNickName(s string) *UserCreate {
 	uc.mutation.SetNickName(s)
+	return uc
+}
+
+// SetNillableNickName sets the "nickName" field if the given value is not nil.
+func (uc *UserCreate) SetNillableNickName(s *string) *UserCreate {
+	if s != nil {
+		uc.SetNickName(*s)
+	}
 	return uc
 }
 
@@ -66,9 +82,25 @@ func (uc *UserCreate) SetUsername(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableUsername sets the "username" field if the given value is not nil.
+func (uc *UserCreate) SetNillableUsername(s *string) *UserCreate {
+	if s != nil {
+		uc.SetUsername(*s)
+	}
+	return uc
+}
+
 // SetPassword sets the "password" field.
 func (uc *UserCreate) SetPassword(s string) *UserCreate {
 	uc.mutation.SetPassword(s)
+	return uc
+}
+
+// SetNillablePassword sets the "password" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePassword(s *string) *UserCreate {
+	if s != nil {
+		uc.SetPassword(*s)
+	}
 	return uc
 }
 
@@ -78,9 +110,25 @@ func (uc *UserCreate) SetEmail(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (uc *UserCreate) SetNillableEmail(s *string) *UserCreate {
+	if s != nil {
+		uc.SetEmail(*s)
+	}
+	return uc
+}
+
 // SetMobile sets the "mobile" field.
 func (uc *UserCreate) SetMobile(s string) *UserCreate {
 	uc.mutation.SetMobile(s)
+	return uc
+}
+
+// SetNillableMobile sets the "mobile" field if the given value is not nil.
+func (uc *UserCreate) SetNillableMobile(s *string) *UserCreate {
+	if s != nil {
+		uc.SetMobile(*s)
+	}
 	return uc
 }
 
@@ -153,24 +201,6 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New("umod: missing required field \"updated_at\"")}
-	}
-	if _, ok := uc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New("umod: missing required field \"name\"")}
-	}
-	if _, ok := uc.mutation.NickName(); !ok {
-		return &ValidationError{Name: "nickName", err: errors.New("umod: missing required field \"nickName\"")}
-	}
-	if _, ok := uc.mutation.Username(); !ok {
-		return &ValidationError{Name: "username", err: errors.New("umod: missing required field \"username\"")}
-	}
-	if _, ok := uc.mutation.Password(); !ok {
-		return &ValidationError{Name: "password", err: errors.New("umod: missing required field \"password\"")}
-	}
-	if _, ok := uc.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New("umod: missing required field \"email\"")}
-	}
-	if _, ok := uc.mutation.Mobile(); !ok {
-		return &ValidationError{Name: "mobile", err: errors.New("umod: missing required field \"mobile\"")}
 	}
 	return nil
 }

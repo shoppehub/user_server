@@ -8,17 +8,29 @@ import (
 )
 
 var (
+	// GroupsColumns holds the columns for the "groups" table.
+	GroupsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Nullable: true},
+	}
+	// GroupsTable holds the schema information for the "groups" table.
+	GroupsTable = &schema.Table{
+		Name:        "groups",
+		Columns:     GroupsColumns,
+		PrimaryKey:  []*schema.Column{GroupsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "name", Type: field.TypeString},
-		{Name: "nick_name", Type: field.TypeString},
-		{Name: "username", Type: field.TypeString},
-		{Name: "password", Type: field.TypeString},
-		{Name: "email", Type: field.TypeString},
-		{Name: "mobile", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Nullable: true},
+		{Name: "nick_name", Type: field.TypeString, Nullable: true},
+		{Name: "username", Type: field.TypeString, Unique: true, Nullable: true},
+		{Name: "password", Type: field.TypeString, Nullable: true},
+		{Name: "email", Type: field.TypeString, Unique: true, Nullable: true},
+		{Name: "mobile", Type: field.TypeString, Unique: true, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
@@ -29,6 +41,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		GroupsTable,
 		UsersTable,
 	}
 )

@@ -9,6 +9,19 @@ import (
 	"github.com/shoppehub/suser/umod"
 )
 
+// The GroupFunc type is an adapter to allow the use of ordinary
+// function as Group mutator.
+type GroupFunc func(context.Context, *umod.GroupMutation) (umod.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f GroupFunc) Mutate(ctx context.Context, m umod.Mutation) (umod.Value, error) {
+	mv, ok := m.(*umod.GroupMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *umod.GroupMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The UserFunc type is an adapter to allow the use of ordinary
 // function as User mutator.
 type UserFunc func(context.Context, *umod.UserMutation) (umod.Value, error)
