@@ -5,9 +5,9 @@ package enttest
 import (
 	"context"
 
-	"github.com/shoppehub/suser/ent"
+	"github.com/shoppehub/suser/umod"
 	// required by schema hooks.
-	_ "github.com/shoppehub/suser/ent/runtime"
+	_ "github.com/shoppehub/suser/umod/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
 )
@@ -24,13 +24,13 @@ type (
 	Option func(*options)
 
 	options struct {
-		opts        []ent.Option
+		opts        []umod.Option
 		migrateOpts []schema.MigrateOption
 	}
 )
 
 // WithOptions forwards options to client creation.
-func WithOptions(opts ...ent.Option) Option {
+func WithOptions(opts ...umod.Option) Option {
 	return func(o *options) {
 		o.opts = append(o.opts, opts...)
 	}
@@ -51,10 +51,10 @@ func newOptions(opts []Option) *options {
 	return o
 }
 
-// Open calls ent.Open and auto-run migration.
-func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *ent.Client {
+// Open calls umod.Open and auto-run migration.
+func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *umod.Client {
 	o := newOptions(opts)
-	c, err := ent.Open(driverName, dataSourceName, o.opts...)
+	c, err := umod.Open(driverName, dataSourceName, o.opts...)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
@@ -66,10 +66,10 @@ func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *ent.Cl
 	return c
 }
 
-// NewClient calls ent.NewClient and auto-run migration.
-func NewClient(t TestingT, opts ...Option) *ent.Client {
+// NewClient calls umod.NewClient and auto-run migration.
+func NewClient(t TestingT, opts ...Option) *umod.Client {
 	o := newOptions(opts)
-	c := ent.NewClient(o.opts...)
+	c := umod.NewClient(o.opts...)
 	if err := c.Schema.Create(context.Background(), o.migrateOpts...); err != nil {
 		t.Error(err)
 		t.FailNow()
