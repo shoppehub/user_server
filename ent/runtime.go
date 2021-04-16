@@ -5,8 +5,8 @@ package ent
 import (
 	"time"
 
-	"github.com/shoppehub/user/ent/schema"
-	"github.com/shoppehub/user/ent/user"
+	"github.com/shoppehub/suser/ent/schema"
+	"github.com/shoppehub/suser/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code

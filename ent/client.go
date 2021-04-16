@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/shoppehub/user/ent/migrate"
+	"github.com/shoppehub/suser/ent/migrate"
 
-	"github.com/shoppehub/user/ent/user"
+	"github.com/shoppehub/suser/ent/user"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"

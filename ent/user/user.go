@@ -17,6 +17,16 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldNickName holds the string denoting the nickname field in the database.
+	FieldNickName = "nick_name"
+	// FieldUsername holds the string denoting the username field in the database.
+	FieldUsername = "username"
+	// FieldPassword holds the string denoting the password field in the database.
+	FieldPassword = "password"
+	// FieldEmail holds the string denoting the email field in the database.
+	FieldEmail = "email"
+	// FieldMobile holds the string denoting the mobile field in the database.
+	FieldMobile = "mobile"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -27,6 +37,11 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldName,
+	FieldNickName,
+	FieldUsername,
+	FieldPassword,
+	FieldEmail,
+	FieldMobile,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

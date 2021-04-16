@@ -14,6 +14,11 @@ type User struct {
 func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name"),
+		field.String("nickName"),
+		field.String("username"),
+		field.String("password"),
+		field.String("email").Comment("用户的邮箱，支持邮箱登录"),
+		field.String("mobile").Comment("手机号码，支持手机号码登录"),
 	}
 }
 

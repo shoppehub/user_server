@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/shoppehub/user/ent"
+	"github.com/shoppehub/suser/ent"
 )
 
 // The UserFunc type is an adapter to allow the use of ordinary

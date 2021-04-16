@@ -1,4 +1,4 @@
-module github.com/shoppehub/user
+module github.com/shoppehub/suser
 
 go 1.16
 

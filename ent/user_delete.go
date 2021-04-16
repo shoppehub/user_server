@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/shoppehub/user/ent/predicate"
-	"github.com/shoppehub/user/ent/user"
+	"github.com/shoppehub/suser/ent/predicate"
+	"github.com/shoppehub/suser/ent/user"
 )
 
 // UserDelete is the builder for deleting a User entity.
