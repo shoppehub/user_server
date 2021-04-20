@@ -8,16 +8,23 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/location"
 
 	"github.com/gin-gonic/gin"
 )
 
-var jwtKey = []byte("shoppe.xyz")
+var (
+	jwtKey     = []byte("shoppe.xyz")
+	ExpiresMin = 60 * 10
+)
 
-const sidKey = "sid"
-
-const UserId = "userId"
+const (
+	sidKey        = "sid"
+	UserId        = "userId"
+	BEARER_SCHEMA = "Bearer"
+)
 
 type Claims struct {
 	UserId string `json:"userId"`
@@ -27,24 +34,23 @@ type Claims struct {
 // 创建 session 中间件
 func NewSessionStore(r *gin.Engine) {
 	r.Use(location.Default())
+	r.Use(cors.Default())
+	r.Use(gzip.Gzip(gzip.DefaultCompression, gzip.WithExcludedPaths([]string{"/api/"})))
 
 	r.Use(func(c *gin.Context) {
-
-		const BEARER_SCHEMA = "Bearer"
+		isAuth := false
 		authHeader := c.GetHeader("Authorization")
 		var tokenString string
 		if authHeader != "" {
 			tokenString = authHeader[len(BEARER_SCHEMA):]
+			isAuth = true
 		}
-
 		if tokenString == "" {
 			tokenString, _ = c.Cookie(sidKey)
 		}
-
 		if tokenString == "" {
 			return
 		}
-
 		claims := &Claims{}
 		tkn, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 			return jwtKey, nil
@@ -62,26 +68,33 @@ func NewSessionStore(r *gin.Engine) {
 			return
 		}
 		c.Set(UserId, claims.UserId)
+		// 如果小于10分钟，重新一次session
+		if !isAuth && claims.ExpiresAt-time.Now().Unix() < int64(ExpiresMin) {
+			// 重新刷新session
+			SaveLoginSession(c, claims.UserId)
+		}
 	})
 
 }
 
 // 保存登录信息到session里
 func SaveLoginSession(c *gin.Context, userId string) {
-	expirationTime := time.Now().Add(30 * time.Minute)
+	// token 一年有效
+	expirationTime := time.Now().Add(24 * time.Hour)
 	sid, err := Sid(userId, expirationTime)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	http.SetCookie(c.Writer, &http.Cookie{
+	cookieConfig := &http.Cookie{
 		Name:     sidKey,
 		Path:     "/",
 		HttpOnly: true,
 		Value:    sid,
 		Domain:   GetSubDomain(c),
 		Expires:  expirationTime,
-	})
+	}
+	http.SetCookie(c.Writer, cookieConfig)
 }
 
 // 退出登录

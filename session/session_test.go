@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,8 @@ func TestSaveLoginSession(t *testing.T) {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	NewSessionStore(r)
+
+	ExpiresMin = 60 * 60 * 24
 
 	r.GET("/get", func(c *gin.Context) {
 
@@ -44,6 +47,9 @@ func TestSaveLoginSession(t *testing.T) {
 	req1, _ := http.NewRequest("GET", "/save", nil)
 	req1.Host = "pp.youkeda.com"
 	r.ServeHTTP(res1, req1)
+	fmt.Println(res1.Header())
+
+	time.Sleep(4 * time.Second)
 
 	res2 := httptest.NewRecorder()
 	req2, _ := http.NewRequest("GET", "/get", nil)
@@ -51,6 +57,8 @@ func TestSaveLoginSession(t *testing.T) {
 
 	req2.Header.Set("Cookie", res1.Header().Get("Set-Cookie"))
 	r.ServeHTTP(res2, req2)
+
+	fmt.Println(res2.Header())
 
 	res3 := httptest.NewRecorder()
 	req3, _ := http.NewRequest("GET", "/logout", nil)
